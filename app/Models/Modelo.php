@@ -5,19 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Car extends Model
+class Modelo extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'patente',
-        'imagen',
-        'marca',
-        'modelo',
+        'nombre',
+        'marca_id',
     ];
 
-    public function modelo()
+    public function marca()
     {
-        return $this->belongsTo(Modelo::class);
+        return $this->belongsTo(Marca::class);
     }
 }

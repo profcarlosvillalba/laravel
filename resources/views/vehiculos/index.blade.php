@@ -6,24 +6,31 @@
             <div class="card">
 
                 <div class="card-header">
-                    <div class="d-flex w-100  align-items-center">
-                        <span>Vehiculos </span>
-                        <a href="{{ route('vehiculos.create') }}" class="btn btn-success btn-sm ms-auto"> <i class="fas fa-plus"> Nuevo</i></a>                            
+                    <div class="d-flex w-100 align-items-center">
+                        <span>Vehículos</span>
+                        <a href="{{ route('vehiculos.create') }}" class="btn btn-success btn-sm ms-auto">
+                            <i class="fas fa-plus"></i> Nuevo
+                        </a>                            
                     </div>
                 </div>
 
+                
+
                 <div class="card-body">
+                    @include('vehiculos.busqueda')
                     @if (session('success'))
                         <div class="alert alert-success" role="alert">
                             {{ session('success') }}
                         </div>
                     @endif
-                    <table class="table" id="tablaDetalle">
+
+                    <table class="table table-striped table-hover" id="tablaDetalle">
                         <thead>
                             <tr>
                                 <th>Patente</th>
                                 <th>Marca</th>
                                 <th>Modelo</th>
+                                <th>Fecha de Registro</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -31,21 +38,23 @@
                              @foreach ($vehiculos as $vehiculo)
                                 <tr>
                                     <td>{{ $vehiculo->patente }}</td>
-                                    <td>{{ $vehiculo->marca }}</td>
-                                    <td>{{ $vehiculo->modelo }}</td>
+                                    <td>{{ $vehiculo->modelo->marca->nombre }}</td>
+                                    <td>{{ $vehiculo->modelo->nombre }}</td>
+                                    <td>{{ $vehiculo->created_at->format('d/m/Y') }}</td>
                                     <td>
-                                        <a href="{{ route('tareas.edit', $vehiculo->id) }}" class="btn btn-warning btn-sm"> <i class="fas fa-edit"> Editar</i></a>
-                                        <form action="{{ route('tareas.destroy', $vehiculo->id) }}" method="POST" style="display:inline-block;">
+                                        <a href="{{ route('vehiculos.edit', $vehiculo->id) }}" class="btn btn-warning btn-sm">
+                                            <i class="fas fa-edit"></i> Editar
+                                        </a>
+                                        <form action="{{ route('vehiculos.destroy', $vehiculo->id) }}" method="POST" style="display:inline-block;">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Estas seguro de eliminar esta tarea?')">
-                                                <i class="fas fa-trash"> Eliminar</i>
+                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estas seguro de eliminar este vehículo?')">
+                                                <i class="fas fa-trash"></i> Eliminar
                                             </button>   
                                         </form>     
                                     </td>                                    
                                 </tr>
                             @endforeach
-
                         </tbody>
                     </table>
                 </div> 
@@ -54,11 +63,33 @@
         </div>
     </div>        
 </div>
-
-
 @endsection
 @push('scripts')     
- 
-@endpush
+<script>
+    $(document).ready(function() {
+        console.log("jQuery listo!");
 
+        $('#tablaDetalle').DataTable({
+            "language":{
+                "info":"_TOTAL_ registros",
+                "search": "Buscar",
+                "paginate": {
+                    "next":"Siguiente",
+                    "previous":"Anterior"
+                },
+                "lengthMenu":'Mostrar <select>'+
+                    '<option value="5">5</option>'+
+                    '<option value="10">10</option>'+
+                    '<select> registros',
+                "loadingRecords":"Cargando...",
+                "processing":"Procesando...",
+                "emptyTable":"No hay datos",
+                "zeroRecords":"No hay coincidencias",
+                "infoEmpty":"",
+                "infoFiltered":""
+            }
+        });
+    });
+</script>
+@endpush
 

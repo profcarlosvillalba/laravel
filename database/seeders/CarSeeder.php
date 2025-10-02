@@ -16,8 +16,20 @@ class CarSeeder extends Seeder
     {
          Car::create([
             'patente'        => 'OOH757',
-            'marca'          =>  "Ford",
-            'modelo'         =>  "Fiesta"
+            'imagen'         =>  "",
+            'modelo_id'      =>  1
+        ]);
+
+         Car::create([
+            'patente'        => 'DTA239',
+            'imagen'         =>  "",
+            'modelo_id'      =>  2
+        ]);
+
+         Car::create([
+            'patente'        => 'WXS457',
+            'imagen'         =>  "",
+            'modelo_id'      =>  2
         ]);
 
     }

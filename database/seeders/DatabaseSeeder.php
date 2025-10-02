@@ -17,10 +17,11 @@ class DatabaseSeeder extends Seeder
         $this->call(TareaSeeder::class);
         $this->call(CountrySeeder::class);
         $this->call(ProvinceSeeder::class);
-       // $this->call(CarSeeder::class);
+        $this->call(MarcaSeeder::class);
+        $this->call(ModeloSeeder::class);
+        $this->call(CarSeeder::class);
         $this->call(RoleSeeder::class);
         $this->call(UserSeeder::class);
-
 
     }
 }
