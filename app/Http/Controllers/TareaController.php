@@ -6,6 +6,8 @@ use App\Models\Tarea;
 use App\Http\Requests\StoreTareaRequest;
 use App\Http\Requests\UpdateTareaRequest;
 
+
+
 class TareaController extends Controller
 {
     /**

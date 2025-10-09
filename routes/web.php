@@ -54,6 +54,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('vehiculos/{vehiculo}/edit', [App\Http\Controllers\CarController::class, 'edit'])->name('vehiculos.edit');
     Route::put('/vehiculos/{vehiculo}', [App\Http\Controllers\CarController::class, 'update'])->name('vehiculos.update');
     Route::delete('vehiculos/{vehiculo}', [App\Http\Controllers\CarController::class, 'destroy'])->name('vehiculos.destroy');
+    Route::get('/vehiculos/export/pdf', [App\Http\Controllers\CarController::class, 'exportPDF'])
+     ->name('vehiculos.exportPdf');
+
+
 
     // Listado de usuarios
     Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])

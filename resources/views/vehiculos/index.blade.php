@@ -10,9 +10,15 @@
                         <span>Vehículos</span>
                         <a href="{{ route('vehiculos.create') }}" class="btn btn-success btn-sm ms-auto">
                             <i class="fas fa-plus"></i> Nuevo
-                        </a>                            
+                        </a>  
+                        
+                                                
+                       
+
+
                     </div>
                 </div>
+
 
                 
 

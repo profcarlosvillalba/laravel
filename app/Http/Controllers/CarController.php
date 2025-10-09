@@ -8,49 +8,69 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCarRequest;
 use App\Http\Requests\UpdateCarRequest;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CarController extends Controller
 {
+    
+    public function exportPDF(Request $request)
+{
+    $desde = $request->input('desde');
+    $hasta = $request->input('hasta');
+    $modelo_id = $request->input('modelo_id');
+    $query = Car::with('modelo.marca');
+    if ($desde && $hasta) {
+        $query->whereDate('created_at', '>=', $desde)
+              ->whereDate('created_at', '<=', $hasta);
+    }
+    if ($modelo_id) {
+        $query->where('modelo_id', $modelo_id);
+        $modelo = Modelo::find($modelo_id);
+    }
+    else{
+        $modelo = null;
+    }
+    $vehiculos = $query->orderBy('created_at', 'desc')->get();
+    $pdf = Pdf::loadView('vehiculos.pdf', compact('vehiculos', 'modelo', 'desde', 'hasta'))
+              ->setPaper('a4', 'landscape');
+    return $pdf->download('vehiculos.pdf');
+}
+
+
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-public function index(Request $request)
+
+    public function index(Request $request)
 {
     $modelos = Modelo::all();
-    $desde = $request->desde;
-    $hasta = $request->hasta;
-    $modelo_id = $request->modelo_id;
-    if(count($request->all()) > 0) {
-        $sql = Car::with('modelo.marca');
-        if($modelo_id) {
-            $sql = $sql->where('modelo_id', $modelo_id);
-        }
-        if($desde) {
-            $sql = $sql->whereDate('created_at', '>=', $desde);
-        }
-        if($hasta) {
-            $sql = $sql->whereDate('created_at', '<=', $hasta);
-        }
-        $vehiculos = $sql
-            ->orderBy('created_at', 'desc')
-            ->get();
-    } else {
-        $vehiculos = Car::with('modelo.marca')
-            ->orderBy('created_at', 'desc')
-            ->get();
-        $modelo_id = null;
-        $desde = null;
-        $hasta = null;
+    $vehiculos = Car::with('modelo.marca');
+    if ($request->filled('modelo_id')) {
+        $vehiculos = $vehiculos->where('modelo_id', $request->modelo_id);
     }
-    return view('vehiculos.index', compact('vehiculos',
-     'modelos',
-     'modelo_id',
-     'desde',
-     'hasta'
-    ));
+    if ($request->filled('desde')) {
+        $vehiculos = $vehiculos->whereDate('created_at', '>=', $request->desde);
+    }
+    if ($request->filled('hasta')) {
+        $vehiculos = $vehiculos->whereDate('created_at', '<=', $request->hasta);
+    }
+    $vehiculos = $vehiculos->orderBy('created_at', 'desc')->get();
+    if ($request->has('pdf')) {
+        return $this->exportPDF($request);
+    }
+    return view('vehiculos.index', [
+        'vehiculos' => $vehiculos,
+        'modelos' => $modelos,
+        'modelo_id' => $request->modelo_id,
+        'desde' => $request->desde,
+        'hasta' => $request->hasta,
+    ]);
 }
+
+
 
     /**
      * Show the form for creating a new resource.

@@ -20,8 +20,10 @@ class DatabaseSeeder extends Seeder
         $this->call(MarcaSeeder::class);
         $this->call(ModeloSeeder::class);
         $this->call(CarSeeder::class);
+
         $this->call(RoleSeeder::class);
         $this->call(UserSeeder::class);
+        
 
     }
 }
