@@ -48,18 +48,33 @@
                                     <td>{{ $vehiculo->modelo->nombre }}</td>
                                     <td>{{ $vehiculo->created_at->format('d/m/Y') }}</td>
                                     <td>
+                               
+                                        {{-- Botón Ver Detalle --}}
+                                        <button 
+                                            type="button" 
+                                            class="btn btn-info btn-sm"
+                                            title="Ver detalle"
+                                            data-toggle="modal"
+                                            data-target="#modal-show-{{ $vehiculo->id }}">
+                                            <i class="fa fa-eye"></i> Ver detalle
+                                        </button>
+
+
                                         <a href="{{ route('vehiculos.edit', $vehiculo->id) }}" class="btn btn-warning btn-sm">
                                             <i class="fas fa-edit"></i> Editar
                                         </a>
-                                        <form action="{{ route('vehiculos.destroy', $vehiculo->id) }}" method="POST" style="display:inline-block;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estas seguro de eliminar este vehículo?')">
-                                                <i class="fas fa-trash"></i> Eliminar
-                                            </button>   
-                                        </form>     
+                                      
+                                        <button type="button" 
+                                            class="btn btn-danger btn-sm" 
+                                            data-toggle="modal" 
+                                            data-target="#modal-delete-{{ $vehiculo->id }}">
+                                            <i class="fas fa-trash"></i> Eliminar
+                                        </button>
+
                                     </td>                                    
                                 </tr>
+                                @include('vehiculos.modalshow')
+                                @include('vehiculos.modaldelete')
                             @endforeach
                         </tbody>
                     </table>

@@ -51,9 +51,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/vehiculos', [App\Http\Controllers\CarController::class, 'index'])->name('vehiculos.index');
     Route::get('/vehiculos/create', [App\Http\Controllers\CarController::class, 'create'])->name('vehiculos.create');
     Route::post('/vehiculos', [App\Http\Controllers\CarController::class, 'store'])->name('vehiculos.store');
+    Route::get('/vehiculos/{vehiculo}', [App\Http\Controllers\CarController::class, 'show'])->name('vehiculos.show');
     Route::get('vehiculos/{vehiculo}/edit', [App\Http\Controllers\CarController::class, 'edit'])->name('vehiculos.edit');
     Route::put('/vehiculos/{vehiculo}', [App\Http\Controllers\CarController::class, 'update'])->name('vehiculos.update');
-    Route::delete('vehiculos/{vehiculo}', [App\Http\Controllers\CarController::class, 'destroy'])->name('vehiculos.destroy');
+    Route::delete('vehiculos/{vehiculo}', [App\Http\Controllers\CarController::class, 'destroy'])
+    ->name('vehiculos.destroy');
     Route::get('/vehiculos/export/pdf', [App\Http\Controllers\CarController::class, 'exportPDF'])
      ->name('vehiculos.exportPdf');
 
