@@ -147,7 +147,7 @@ class CarController extends Controller
      * @param  \App\Models\Car  $car
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Vehiculo $vehiculo)
+    public function destroy(Car $vehiculo)
     {
         $vehiculo->delete();
         return redirect()
